@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Signup</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white flex items-center justify-center min-h-screen">
+
+<div class="bg-gray-800 p-8 rounded-lg shadow-md w-full max-w-md">
+  <h2 class="text-3xl font-bold mb-6 text-center">📝 Signup</h2>
+
+  <div class="mb-6">
+    <input id="email" type="email" placeholder="Email" class="w-full p-3 bg-gray-700 text-white border-2 border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+  </div>
+  <div class="mb-6">
+    <input id="password" type="password" placeholder="Password" class="w-full p-3 bg-gray-700 text-white border-2 border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+  </div>
+
+  <button id="signupBtn" class="bg-green-600 hover:bg-green-700 text-white p-3 rounded-md w-full">Sign Up</button>
+
+  <p id="message" class="mt-4 text-center"></p>
+</div>
+
+<script>
+// Helper to hash password
+async function hashPassword(password) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(password);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  return hashHex;
+}
+
+document.getElementById('signupBtn').addEventListener('click', async () => {
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+
+  const messageDiv = document.getElementById('message');
+
+  if (!email || !password) {
+    messageDiv.textContent = "⚠️ Please enter both email and password.";
+    messageDiv.className = "text-red-500";
+    return;
+  }
+
+  let users = JSON.parse(localStorage.getItem('user_vector_store')) || [];
+
+  // Check if user already exists
+  const userExists = users.some(user => user.email === email);
+  if (userExists) {
+    messageDiv.textContent = "❌ Email already registered. Please login.";
+    messageDiv.className = "text-red-500";
+
+    // Redirect to login page after displaying the message
+    setTimeout(() => {
+      window.location.href = "login.html"; // Redirect to login page
+    }, 2000);
+
+    return;
+  }
+
+  const passwordHash = await hashPassword(password);
+
+  users.push({ email, passwordHash });
+
+  localStorage.setItem('user_vector_store', JSON.stringify(users));
+
+  messageDiv.textContent = "✅ Signup successful! Please login now.";
+  messageDiv.className = "text-green-500";
+
+  // Optional: redirect to login page after signup
+  setTimeout(() => {
+    window.location.href = "login.html";
+  }, 2000);
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white flex items-center justify-center min-h-screen">
+
+<div class="bg-gray-800 p-8 rounded-lg shadow-md w-full max-w-md">
+  <h2 class="text-3xl font-bold mb-6 text-center">🔐 Login</h2>
+
+  <div class="mb-6">
+    <input id="email" type="email" placeholder="Email" class="w-full p-3 bg-gray-700 text-white border-2 border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+  </div>
+  <div class="mb-6">
+    <input id="password" type="password" placeholder="Password" class="w-full p-3 bg-gray-700 text-white border-2 border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+  </div>
+
+  <div class="mb-6 flex items-center">
+    <input id="rememberMe" type="checkbox" class="form-checkbox text-blue-500">
+    <label for="rememberMe" class="ml-2 text-gray-300">Remember Me</label>
+  </div>
+
+  <button id="loginBtn" class="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-md w-full">Login</button>
+
+  <p id="message" class="mt-4 text-center"></p>
+</div>
+
+<script>
+// Helper to hash password
+async function hashPassword(password) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(password);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  return hashHex;
+}
+
+document.getElementById('loginBtn').addEventListener('click', async () => {
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const rememberMe = document.getElementById('rememberMe').checked;
+
+  const messageDiv = document.getElementById('message');
+
+  let users = JSON.parse(localStorage.getItem('user_vector_store')) || [];
+
+  const passwordHash = await hashPassword(password);
+
+  const user = users.find(user => user.email === email && user.passwordHash === passwordHash);
+
+  if (user) {
+    messageDiv.textContent = "✅ Login successful!";
+    messageDiv.className = "text-green-500";
+
+    // Set sessionStorage for auto-login
+    sessionStorage.setItem('loggedInUser', JSON.stringify({ email }));
+
+    // If "Remember Me" is checked, set a persistent token in localStorage
+    if (rememberMe) {
+      const token = btoa(JSON.stringify({ email })); // Create a simple base64 token
+      localStorage.setItem('rememberMeToken', token);
+    }
+
+    setTimeout(() => {
+      window.location.href = "index.html";  // Redirect to main app
+    }, 1000);
+  } else {
+    messageDiv.textContent = "❌ Invalid email or password.";
+    messageDiv.className = "text-red-500";
+  }
+});
+</script>
+
+</body>
+</html>
