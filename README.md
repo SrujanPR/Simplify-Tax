@@ -13,6 +13,18 @@ Many taxpayers overpay their taxes due to a lack of awareness of all eligible de
 
 ---
 
+## 🧠 Tech Stack Used
+
+- **Frontend**: HTML, Tailwind CSS, JavaScript
+- **Backend**: FastAPI (Python)
+- **AI Agent Framework**: [CrewAI](https://github.com/joaomdmoura/crewAI)
+- **LLM Provider**: Google Gemini via [LiteLLM](https://github.com/BerriAI/litellm)
+- **Markdown Parsing**: Marked.js
+- **CORS Handling**: FastAPI CORSMiddleware
+- **Deployment-Ready**: Works locally and ready for platforms like Render, Railway, or Replit
+
+---
+
 ## 🔍 AI Agents & Their Real-Life Equivalents
 
 | AI Agent                   | Real-Life Equivalent                          |
@@ -25,15 +37,31 @@ Many taxpayers overpay their taxes due to a lack of awareness of all eligible de
 
 ---
 
-## 🧠 Tech Stack Used
+## ✨ Features
 
-- **Frontend**: HTML, Tailwind CSS, JavaScript
-- **Backend**: FastAPI (Python)
-- **AI Agent Framework**: [CrewAI](https://github.com/joaomdmoura/crewAI)
-- **LLM Provider**: Google Gemini via [LiteLLM](https://github.com/BerriAI/litellm)
-- **Markdown Parsing**: Marked.js
-- **CORS Handling**: FastAPI CORSMiddleware
-- **Deployment-Ready**: Works locally and ready for platforms like Render, Railway, or Replit
+- ✅ Upload and analyze your bank statement (text format)
+- ✅ Auto-categorizes income sources and deductions
+- ✅ Calculates tax liability under both regimes
+- ✅ Compares and recommends the best regime
+- ✅ Provides downloadable markdown summary
+- ✅ Easy logout and clean UI
+
+---
+
+## 📁 File Structure
+
+```
+simplify-tax/
+│
+├── backend 
+    └── main.py              # FastAPI backend with CrewAI agents
+├── frontend
+    ├── index.html            # Frontend HTML page
+    ├── login.html            # Frontend for Login Page
+    └── signup.html           # Frontend for Sign Up Page
+├── requirements.txt         # Python dependencies
+└── README.md                # You're here!
+```
 
 ---
 
@@ -100,34 +128,6 @@ Here is a sample:
     - Rent Paid (self-occupied home, no HRA)
     - Donation to Akshaya Patra Foundation: ₹15,000
     - Purchase of NPS (National Pension Scheme): ₹50,000
-
----
-
-## ✨ Features
-
-- ✅ Upload and analyze your bank statement (text format)
-- ✅ Auto-categorizes income sources and deductions
-- ✅ Calculates tax liability under both regimes
-- ✅ Compares and recommends the best regime
-- ✅ Provides downloadable markdown summary
-- ✅ Easy logout and clean UI
-
----
-
-## 📁 File Structure
-
-```
-simplify-tax/
-│
-├── backend 
-    └── main.py              # FastAPI backend with CrewAI agents
-├── frontend
-    ├── index.html            # Frontend HTML page
-    ├── login.html            # Frontend for Login Page
-    └── signup.html           # Frontend for Sign Up Page
-├── requirements.txt         # Python dependencies
-└── README.md                # You're here!
-```
 
 ---
 
