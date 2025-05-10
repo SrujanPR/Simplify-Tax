@@ -76,7 +76,7 @@ simplify-tax/
 
 ### 1️⃣ Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/simplify-tax.git
+   git clone https://github.com/SrujanPR/Simplify-Tax.git
    cd simplify-tax
    ```
 
